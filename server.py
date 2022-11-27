@@ -48,18 +48,14 @@ def get_player_stats(player_email):
     global GAME_ID
     headers = {"Authorization": "Bearer " + API_KEY}
 
-    request_obj = {
-        "player_emails": [player_email]
-    }
     response = requests.get(
         matchmaking_api_url + "/games/" + GAME_ID + "/players/" + player_email,
-        headers = headers,
-        json=request_obj
+        headers = headers
     )
 
     if (response.status_code == 200):
         stats = response.json()
-        return stats[player_email]
+        return stats
     return None
 
 
@@ -68,12 +64,10 @@ def update_player_stats(player_email, stats):
     global GAME_ID
     headers = {"Authorization": "Bearer " + API_KEY}
 
-    request_obj = {}
-    request_obj[player_email] = stats
     response = requests.put(
-        matchmaking_api_url + "/games/" + GAME_ID + "/players",
+        matchmaking_api_url + "/games/" + GAME_ID + "/players/" + player_email,
         headers = headers,
-        json = request_obj
+        json = stats
     )
 
     if (response.status_code == 200):
